@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tm.mapper.PermissionMapper">
+
+    <!--<sql id="aaa">
+        <where>
+            <if test="user.username !=null and user.username !='' ">
+                and username like concat('%',#{user.username},'%')
+            </if>
+            <if test="user.username !=null and user.username !='' ">
+                or real_name like concat('%',#{user.username},'%')
+            </if>
+        </where>
+    </sql>-->
+
+    <select id="listAllPermission" resultType="PermissionEntity">
+        select * from a_permission
+    </select>
+
+    <select id="permissionMenuList" resultType="PermissionEntity">
+        select DISTINCT p.* from a_user u
+             left join a_user_role ur on u.id = ur.user_id
+             left join a_role_permission rp on ur.role_id = rp.role_id
+             left join a_permission p on p.id = rp.permission_id
+        where u.username = #{principal}
+          and type = 0
+    </select>
+
+    <insert id="permissionadd">
+        insert into a_permission(
+            name,
+            pid,
+            permission_identifier,
+            url,
+            type,
+            icon,
+            sort_number,
+            create_date
+        )values (
+            #{name},
+            #{pid},
+            #{permissionIdentifier},
+            #{url},
+            #{type},
+            #{icon},
+            #{sortNumber},
+            now()
+                        )
+    </insert>
+
+    <update id="permissionUpdate">
+        update a_permission set
+            name = #{name},
+            pid = #{pid},
+            permission_identifier = #{permissionIdentifier},
+            url = #{url},
+            type = #{type},
+            icon = #{icon},
+            sort_number = #{sortNumber},
+            update_date = now()
+        where id = #{id}
+    </update>
+
+    <delete id="permissionDelete">
+        delete from a_permission where id in
+            <foreach collection="deleteIds" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+    </delete>
+
+</mapper>
