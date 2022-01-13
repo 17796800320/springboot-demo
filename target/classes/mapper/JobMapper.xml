@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tm.mapper.JobMapper">
+
+    <select id="listAll" resultType="Job">
+        select * from a_job
+    </select>
+
+    <select id="getJobByName" resultType="Job">
+        select * from a_job where name = #{name}
+    </select>
+
+    <insert id="insertJob">
+        insert into a_job(
+            name,
+            pid,
+            serial_number,
+            responsibility,
+            remark,
+            sort_number,
+            create_time
+        )values (
+            #{name},
+            #{pid},
+            #{serialNumber},
+            #{responsibility},
+            #{remark},
+            #{sortNumber},
+            now()
+        )
+    </insert>
+
+    <update id="update">
+        update a_job set
+             name = #{name},
+             pid = #{pid},
+             serial_number = #{serialNumber} ,
+             responsibility = #{responsibility} ,
+             remark = #{remark} ,
+             sort_number = #{sortNumber} ,
+             update_time = now()
+            where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from a_job where id in
+        <foreach collection="deleteIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,21 @@
+# 必须有层级关系才能生效
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tm?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+
+mybatis:
+  type-aliases-package: com.tm.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+person:
+  name: 张三
+  age: 20
+  city:
+    -北京
+    -河南
